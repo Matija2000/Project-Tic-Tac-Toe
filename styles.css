@@ -1,0 +1,22 @@
+.body {
+  font-family: "Roboto", sans-serif;
+}
+
+.container {
+  width: 600px;
+  display: grid;
+  grid-template-columns: 1fr 1fr 1fr;
+  border: 2px solid black;
+  font-size: 2rem;
+  font-weight: lighter;
+}
+
+.item-box {
+  box-sizing: border-box;
+  width: 200px;
+  height: 200px;
+  border: 2px solid black;
+  display: grid;
+  align-items: center;
+  justify-content: center;
+}
