@@ -1,5 +1,3 @@
-const boxes = document.querySelectorAll(".item-box");
-
 const Gameboard = (function () {
   let gameboard = [];
   mark = "O";
@@ -13,9 +11,24 @@ const Gameboard = (function () {
   };
   const addToArray = (index, mark) => {
     gameboard[index] = mark;
+    renderArrayContents();
   };
 
-  addToArray(0, switchMark());
+  function renderArrayContents() {
+    const items = gameboard; //array
+    for (let i = 0; i <= 8; i++) {
+      boxes[i].textContent = items[i];
+    }
+  }
+  const boxes = document.querySelectorAll(".item-box");
+  boxes.forEach((box) => {
+    box.addEventListener("click", () => {
+      let arr = Array.from(boxes);
+      if (box.textContent === "") {
+        addToArray(arr.indexOf(box), switchMark());
+      }
+    });
+  });
 
   return {
     gameboard,
@@ -29,10 +42,4 @@ function players(name) {
 
 const game = {};
 
-function renderArrayContents() {
-  const items = Gameboard.gameboard; //array
-  for (let i = 0; i <= 8; i++) {
-    boxes[i].textContent = items[i];
-  }
-}
-renderArrayContents();
+const lol = document.querySelector("#lol");
