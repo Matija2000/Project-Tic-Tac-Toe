@@ -49,6 +49,20 @@ function players(name) {
 const game = (function () {
   let board = Gameboard.gameboard;
 
+  const dialogs = document.querySelectorAll("dialog");
+  dialogs.forEach((dialog) => {
+    dialog.addEventListener("cancel", (event) => {
+      event.preventDefault();
+    });
+  });
+
+  const d0 = document.querySelector(".d0");
+  d0.showModal();
+
+  document.querySelector(".start").addEventListener("click", () => {
+    d0.close();
+  });
+
   const checkForWinner = () => {
     if (
       (board[0] == "X" && board[1] == "X" && board[2] == "X") ||
@@ -68,7 +82,7 @@ const game = (function () {
       (board[1] == "O" && board[4] == "O" && board[7] == "O") ||
       (board[2] == "O" && board[5] == "O" && board[8] == "O")
     ) {
-      const dialog = document.querySelector("dialog");
+      const dialog = document.querySelector(".d1");
       dialog.showModal();
       return true;
     }
@@ -81,22 +95,11 @@ const game = (function () {
       count++;
     });
     if (count === 9) {
-      const dialog = document.querySelector(".second_dialog");
+      const dialog = document.querySelector(".d2");
       dialog.showModal();
     }
     return count;
   };
-
-  const input = document.querySelector("input");
-  const playerWrapper = document.querySelector(".player_wrapper");
-  const addPlayer = document.querySelector(".add_player");
-  addPlayer.addEventListener("click", (e) => {
-    e.preventDefault();
-    const player = players(input.value);
-    const div = document.createElement("div");
-    div.textContent = player.name;
-    playerWrapper.appendChild(div);
-  });
 
   return { checkForWinner, checkForTie };
 })();

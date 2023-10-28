@@ -11,8 +11,30 @@
       href="https://fonts.googleapis.com/css2?family=Roboto:wght@100;300;700;900&display=swap"
       rel="stylesheet"
     />
+    <link
+      rel="stylesheet"
+      href="https://fonts.googleapis.com/css2?family=Material+Symbols+Outlined:opsz,wght,FILL,GRAD@24,400,0,0"
+    />
   </head>
   <body>
+    <dialog class="d0">
+      <button class="start">Start</button>
+      <h1>Tic Tac Toe</h1>
+      <form action="">
+        <div class="one">
+          <label for="player1"
+            ><span class="material-symbols-outlined"> edit </span></label
+          >
+          <input class="player1" type="text" id="player1" value="Player1" />
+        </div>
+        <div class="two">
+          <label for="player2"
+            ><span class="material-symbols-outlined"> edit </span></label
+          >
+          <input class="player2" type="text" id="player2" value="Player2" />
+        </div>
+      </form>
+    </dialog>
     <h1>Tic Tac Toe</h1>
     <div>
       <div class="container">
@@ -25,14 +47,11 @@
         <div class="item-box"></div>
         <div class="item-box"></div>
         <div class="item-box"></div>
-        <dialog>Good game!</dialog>
-        <dialog class="second_dialog">It's a tie!</dialog>
+        <dialog class="d1">Good game!</dialog>
+        <dialog class="d2">It's a tie!</dialog>
       </div>
     </div>
-    <form action="">
-      <input required type="text" />
-      <button class="add_player">+ Add player</button>
-    </form>
+
     <div class="player_wrapper"></div>
     <footer>Made by <a href="https://github.com/Matija2000">Matija</a></footer>
     <script src="app.js"></script>
