@@ -10,9 +10,14 @@ const Gameboard = (function () {
     return mark;
   };
   const addToArray = (index, mark) => {
-    gameboard[index] = mark;
-    renderArrayContents();
-    game.checkForWinner();
+    if (game.checkForWinner() === true && game.checkForTie > 9) {
+      return;
+    } else {
+      gameboard[index] = mark;
+      renderArrayContents();
+      game.checkForWinner();
+      game.checkForTie();
+    }
   };
 
   function renderArrayContents() {
@@ -63,9 +68,35 @@ const game = (function () {
       (board[1] == "O" && board[4] == "O" && board[7] == "O") ||
       (board[2] == "O" && board[5] == "O" && board[8] == "O")
     ) {
-      console.log("gg");
+      const dialog = document.querySelector("dialog");
+      dialog.showModal();
+      return true;
     }
   };
 
-  return { checkForWinner, board };
+  const checkForTie = () => {
+    const arr = Gameboard.gameboard;
+    let count = 0;
+    arr.forEach(() => {
+      count++;
+    });
+    if (count === 9) {
+      const dialog = document.querySelector(".second_dialog");
+      dialog.showModal();
+    }
+    return count;
+  };
+
+  const input = document.querySelector("input");
+  const playerWrapper = document.querySelector(".player_wrapper");
+  const addPlayer = document.querySelector(".add_player");
+  addPlayer.addEventListener("click", (e) => {
+    e.preventDefault();
+    const player = players(input.value);
+    const div = document.createElement("div");
+    div.textContent = player.name;
+    playerWrapper.appendChild(div);
+  });
+
+  return { checkForWinner, checkForTie };
 })();
