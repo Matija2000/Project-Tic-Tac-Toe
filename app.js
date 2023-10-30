@@ -47,42 +47,65 @@ function players(name) {
 }
 
 const game = (function () {
+  function stopDialogEscClose() {
+    const dialogs = document.querySelectorAll("dialog");
+    dialogs.forEach((dialog) => {
+      dialog.addEventListener("cancel", (event) => {
+        event.preventDefault();
+      });
+    });
+  }
+  stopDialogEscClose();
+
+  function startGame() {
+    const d0 = document.querySelector(".d0");
+    d0.showModal();
+    document.querySelector(".start").addEventListener("click", () => {
+      const scores = document.querySelector(".track_scores");
+      const player1 = document.createElement("div");
+      const player2 = document.createElement("div");
+      player1.textContent = document.querySelector("#player1").value;
+      player2.textContent = document.querySelector("#player2").value;
+      player1.style = "color:red";
+      player2.style = "color:blue";
+      scores.appendChild(player1);
+      scores.appendChild(player2);
+      const playerOneObject = players(player1.textContent);
+      const playerTwoObject = players(player2.textContent);
+      console.log(playerOneObject, playerTwoObject);
+      d0.close();
+    });
+  }
+  startGame();
+
   let board = Gameboard.gameboard;
 
-  const dialogs = document.querySelectorAll("dialog");
-  dialogs.forEach((dialog) => {
-    dialog.addEventListener("cancel", (event) => {
-      event.preventDefault();
-    });
-  });
-
-  const d0 = document.querySelector(".d0");
-  d0.showModal();
-
-  document.querySelector(".start").addEventListener("click", () => {
-    d0.close();
-  });
-
   const checkForWinner = () => {
+    const dialog = document.querySelector(".d1");
     if (
       (board[0] == "X" && board[1] == "X" && board[2] == "X") ||
       (board[3] == "X" && board[4] == "X" && board[5] == "X") ||
       (board[6] == "X" && board[7] == "X" && board[8] == "X") ||
+      (board[0] == "X" && board[4] == "X" && board[8] == "X") ||
+      (board[2] == "X" && board[4] == "X" && board[6] == "X") ||
+      (board[0] == "X" && board[3] == "X" && board[6] == "X") ||
+      (board[1] == "X" && board[4] == "X" && board[7] == "X") ||
+      (board[2] == "X" && board[5] == "X" && board[8] == "X")
+    ) {
+      dialog.textContent = `Player ONE wins!`;
+      dialog.showModal();
+      return true;
+    } else if (
       (board[0] == "O" && board[1] == "O" && board[2] == "O") ||
       (board[3] == "O" && board[4] == "O" && board[5] == "O") ||
       (board[6] == "O" && board[7] == "O" && board[8] == "O") ||
-      (board[0] == "X" && board[4] == "X" && board[8] == "X") ||
-      (board[2] == "X" && board[4] == "X" && board[6] == "X") ||
       (board[0] == "O" && board[4] == "O" && board[8] == "O") ||
       (board[2] == "O" && board[4] == "O" && board[6] == "O") ||
-      (board[0] == "X" && board[3] == "X" && board[6] == "X") ||
-      (board[1] == "X" && board[4] == "X" && board[7] == "X") ||
-      (board[2] == "X" && board[5] == "X" && board[8] == "X") ||
       (board[0] == "O" && board[3] == "O" && board[6] == "O") ||
       (board[1] == "O" && board[4] == "O" && board[7] == "O") ||
       (board[2] == "O" && board[5] == "O" && board[8] == "O")
     ) {
-      const dialog = document.querySelector(".d1");
+      dialog.textContent = `Player TWO wins!`;
       dialog.showModal();
       return true;
     }
@@ -101,5 +124,5 @@ const game = (function () {
     return count;
   };
 
-  return { checkForWinner, checkForTie };
+  return { checkForWinner, checkForTie, startGame };
 })();

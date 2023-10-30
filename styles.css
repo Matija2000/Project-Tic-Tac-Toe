@@ -19,7 +19,6 @@ body {
   grid-template-columns: 1fr 1fr 1fr;
   border: 2px solid black;
   font-size: 2rem;
-  font-weight: lighter;
 }
 
 .item-box {
@@ -117,4 +116,22 @@ form {
 
 .start:hover {
   background-color: green;
+}
+
+.track_scores {
+  display: flex;
+  gap: 10rem;
+  font-size: 2rem;
+}
+
+.track_scores > div:first-child::after {
+  content: ": X";
+  color: black;
+  font-weight: bold;
+}
+
+.track_scores > div:last-child::after {
+  content: ": O";
+  color: black;
+  font-weight: bold;
 }
