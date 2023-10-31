@@ -135,3 +135,15 @@ form {
   color: black;
   font-weight: bold;
 }
+
+.restart {
+  margin: 10px;
+  padding: 10px 20px;
+  background-color: lightblue;
+  border: none;
+  border-radius: 0.2rem;
+}
+
+.restart:hover {
+  background-color: blueviolet;
+}

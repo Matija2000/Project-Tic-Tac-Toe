@@ -1,5 +1,14 @@
 const Gameboard = (function () {
   let gameboard = [];
+
+  function resetGameboard() {
+    gameboard = [];
+  }
+
+  function getGameboard() {
+    return gameboard;
+  }
+
   mark = "O";
   const switchMark = () => {
     if (mark === "X") {
@@ -39,6 +48,9 @@ const Gameboard = (function () {
   return {
     gameboard,
     addToArray,
+    renderArrayContents,
+    resetGameboard,
+    getGameboard,
   };
 })();
 
@@ -57,31 +69,41 @@ const game = (function () {
   }
   stopDialogEscClose();
 
-  function startGame() {
-    const d0 = document.querySelector(".d0");
-    d0.showModal();
-    document.querySelector(".start").addEventListener("click", () => {
-      const scores = document.querySelector(".track_scores");
-      const player1 = document.createElement("div");
-      const player2 = document.createElement("div");
-      player1.textContent = document.querySelector("#player1").value;
-      player2.textContent = document.querySelector("#player2").value;
-      player1.style = "color:red";
-      player2.style = "color:blue";
-      scores.appendChild(player1);
-      scores.appendChild(player2);
-      const playerOneObject = players(player1.textContent);
-      const playerTwoObject = players(player2.textContent);
-      console.log(playerOneObject, playerTwoObject);
-      d0.close();
-    });
-  }
-  startGame();
+  const d0 = document.querySelector(".d0");
+  d0.showModal();
+  let playerOneObject;
+  let playerTwoObject;
+  document.querySelector(".start").addEventListener("click", () => {
+    const scores = document.querySelector(".track_scores");
+    const player1 = document.createElement("div");
+    const player2 = document.createElement("div");
+    player1.textContent = document.querySelector("#player1").value;
+    player2.textContent = document.querySelector("#player2").value;
+    player1.style = "color:red";
+    player2.style = "color:blue";
+    scores.appendChild(player1);
+    scores.appendChild(player2);
+    playerOneObject = players(player1.textContent);
+    playerTwoObject = players(player2.textContent);
+    d0.close();
+  });
 
-  let board = Gameboard.gameboard;
+  let board = Gameboard.getGameboard();
+
+  const restart = document.createElement("button");
+  restart.classList.add("restart");
+  restart.textContent = "restart";
+  restart.addEventListener("click", () => {
+    Gameboard.resetGameboard(); // resets private variable gameboard in Gameboard
+    Gameboard.renderArrayContents(); // renders contents of a private variable gameboard in Gameboard
+    document.querySelector(".d1").close();
+    document.querySelector(".d2").close();
+    board = Gameboard.getGameboard();
+  });
 
   const checkForWinner = () => {
     const dialog = document.querySelector(".d1");
+
     if (
       (board[0] == "X" && board[1] == "X" && board[2] == "X") ||
       (board[3] == "X" && board[4] == "X" && board[5] == "X") ||
@@ -92,7 +114,9 @@ const game = (function () {
       (board[1] == "X" && board[4] == "X" && board[7] == "X") ||
       (board[2] == "X" && board[5] == "X" && board[8] == "X")
     ) {
-      dialog.textContent = `Player ONE wins!`;
+      dialog.textContent = `${playerOneObject.name} wins the game!`;
+      dialog.appendChild(restart);
+
       dialog.showModal();
       return true;
     } else if (
@@ -105,24 +129,29 @@ const game = (function () {
       (board[1] == "O" && board[4] == "O" && board[7] == "O") ||
       (board[2] == "O" && board[5] == "O" && board[8] == "O")
     ) {
-      dialog.textContent = `Player TWO wins!`;
+      dialog.textContent = `${playerTwoObject.name} wins the game!`;
+      dialog.appendChild(restart);
       dialog.showModal();
       return true;
     }
   };
 
   const checkForTie = () => {
-    const arr = Gameboard.gameboard;
+    const arr = Gameboard.getGameboard();
     let count = 0;
     arr.forEach(() => {
       count++;
     });
     if (count === 9) {
       const dialog = document.querySelector(".d2");
+      dialog.appendChild(restart);
       dialog.showModal();
     }
     return count;
   };
 
-  return { checkForWinner, checkForTie, startGame };
+  return {
+    checkForWinner,
+    checkForTie,
+  };
 })();
