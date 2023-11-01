@@ -136,7 +136,8 @@ form {
   font-weight: bold;
 }
 
-.restart {
+.restart,
+.menu {
   margin: 10px;
   padding: 10px 20px;
   background-color: lightblue;
@@ -144,6 +145,7 @@ form {
   border-radius: 0.2rem;
 }
 
-.restart:hover {
+.restart:hover,
+.menu:hover {
   background-color: blueviolet;
 }

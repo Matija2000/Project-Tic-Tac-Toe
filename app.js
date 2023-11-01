@@ -71,9 +71,11 @@ const game = (function () {
 
   const d0 = document.querySelector(".d0");
   d0.showModal();
+
   let playerOneObject;
   let playerTwoObject;
-  document.querySelector(".start").addEventListener("click", () => {
+
+  function displayPlayerNames() {
     const scores = document.querySelector(".track_scores");
     const player1 = document.createElement("div");
     const player2 = document.createElement("div");
@@ -86,6 +88,25 @@ const game = (function () {
     playerOneObject = players(player1.textContent);
     playerTwoObject = players(player2.textContent);
     d0.close();
+    function removeChildren() {
+      while (scores.firstChild) {
+        scores.removeChild(scores.lastChild);
+      }
+    }
+    return { removeChildren };
+  }
+
+  document.querySelector(".start").addEventListener("click", () => {
+    displayPlayerNames();
+  });
+
+  const menu = document.createElement("button");
+  menu.classList.add("menu");
+  menu.textContent = "menu";
+  menu.addEventListener("click", () => {
+    resetValues();
+    displayPlayerNames().removeChildren();
+    d0.showModal();
   });
 
   let board = Gameboard.getGameboard();
@@ -94,12 +115,16 @@ const game = (function () {
   restart.classList.add("restart");
   restart.textContent = "restart";
   restart.addEventListener("click", () => {
+    resetValues();
+  });
+
+  function resetValues() {
     Gameboard.resetGameboard(); // resets private variable gameboard in Gameboard
     Gameboard.renderArrayContents(); // renders contents of a private variable gameboard in Gameboard
     document.querySelector(".d1").close();
     document.querySelector(".d2").close();
     board = Gameboard.getGameboard();
-  });
+  }
 
   const checkForWinner = () => {
     const dialog = document.querySelector(".d1");
@@ -116,6 +141,7 @@ const game = (function () {
     ) {
       dialog.textContent = `${playerOneObject.name} wins the game!`;
       dialog.appendChild(restart);
+      dialog.appendChild(menu);
 
       dialog.showModal();
       return true;
@@ -131,6 +157,7 @@ const game = (function () {
     ) {
       dialog.textContent = `${playerTwoObject.name} wins the game!`;
       dialog.appendChild(restart);
+      dialog.appendChild(menu);
       dialog.showModal();
       return true;
     }
@@ -145,6 +172,7 @@ const game = (function () {
     if (count === 9) {
       const dialog = document.querySelector(".d2");
       dialog.appendChild(restart);
+      dialog.appendChild(menu);
       dialog.showModal();
     }
     return count;
@@ -153,5 +181,6 @@ const game = (function () {
   return {
     checkForWinner,
     checkForTie,
+    displayPlayerNames,
   };
 })();
